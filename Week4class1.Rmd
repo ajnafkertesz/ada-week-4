@@ -1,0 +1,52 @@
+---
+title: "Week 4"
+author: "Ajna Kertesz"
+date: "2/6/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Chaper 12 Challenges
+
+```{r 1st, echo=FALSE}
+x <- c(1,2,3,4,5,6,7,8,9,10,25,50,100,200,1000)
+geometric_mean <- function(x){prod(x)^(1/length(x))}
+geometric_mean(x)
+
+sum_of_squares <- function(x){sum((x-mean(x))^2)}
+sum_of_squares(x)
+
+sample_var <- function (x){sum((x-mean(x))^2)/(length(x)-1)}
+sample_var(x)
+var(x)
+
+
+
+```
+
+```{r 2nd, echo=FALSE}
+
+library(dplyr)
+library(tidyverse)
+
+f <- "https://raw.githubusercontent.com/difiore/ada-2022-datasets/main/IMDB-movies.csv"
+d <- read_csv(f, col_names = TRUE)
+
+
+n <- 100
+set.seed(100)
+my_se1 <- function(x) {sqrt(sample_var(x) / length(x))}
+my_se2 <- function(x) {sqrt(var(x) / length(x))}
+my_se3 <- function(x) {sd(x) / sqrt(length(x))}
+
+new_sample <- sample_n(d, size = n)
+summarize(
+  new_sample,
+  se1 = my_se1(averageRating),
+  se2 = my_se2(averageRating),
+  se3 = my_se3(averageRating)
+)
+```
